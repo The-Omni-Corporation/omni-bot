@@ -8,13 +8,12 @@
 //                                                                           //
 //======---------------------------------------------------------------======//
 
-use log::LevelFilter;
 use serde::Deserialize;
 use serenity::prelude::TypeMapKey;
 use std::env;
 use std::fs;
-use std::sync::Arc;
 use toml;
+use tracing::metadata::Level;
 
 #[derive(Copy, Clone, Eq, PartialEq, Deserialize)]
 pub enum LogLevel {
@@ -30,14 +29,14 @@ pub enum LogLevel {
     Error,
 }
 
-impl Into<LevelFilter> for LogLevel {
-    fn into(self) -> LevelFilter {
+impl Into<Level> for LogLevel {
+    fn into(self) -> Level {
         match self {
-            Self::Trace => LevelFilter::Trace,
-            Self::Debug => LevelFilter::Debug,
-            Self::Info => LevelFilter::Info,
-            Self::Warn => LevelFilter::Warn,
-            Self::Error => LevelFilter::Error,
+            Self::Trace => Level::TRACE,
+            Self::Debug => Level::DEBUG,
+            Self::Info => Level::INFO,
+            Self::Warn => Level::WARN,
+            Self::Error => Level::ERROR,
         }
     }
 }

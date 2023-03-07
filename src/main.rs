@@ -15,20 +15,18 @@ mod handler;
 
 use crate::client::build_client;
 use crate::config::{read_config, Config};
-use log::{debug, error, info, trace, warn};
-use serenity::client::ClientBuilder;
-use simple_logger::SimpleLogger;
-use std::sync::Arc;
-use tracing::{debug, error, info, instrument};
+use tracing::instrument;
+use tracing::log::*;
+use tracing_subscriber::filter::LevelFilter;
 
 #[tokio::main]
+#[instrument]
 async fn main() {
     let config = read_config();
 
-    SimpleLogger::new()
-        .with_level(config.options.log_level.into())
-        .init()
-        .unwrap();
+    tracing_subscriber::fmt()
+        .with_max_level(LevelFilter::from_level(config.options.log_level.into()))
+        .init();
 
     let mut client = build_client(&config).await;
 

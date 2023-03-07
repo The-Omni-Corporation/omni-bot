@@ -9,12 +9,11 @@
 //======---------------------------------------------------------------======//
 
 use crate::config::Config;
-use log::*;
 use serenity::framework::standard::macros::{command, group};
-use serenity::framework::standard::{CommandError, CommandResult, StandardFramework};
+use serenity::framework::standard::{CommandError, CommandResult};
 use serenity::model::channel::Message;
-use serenity::model::id::UserId;
 use serenity::prelude::*;
+use tracing::log::*;
 
 #[command]
 async fn ping(ctx: &Context, msg: &Message) -> CommandResult {

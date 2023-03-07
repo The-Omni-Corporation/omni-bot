@@ -8,17 +8,29 @@
 //                                                                           //
 //======---------------------------------------------------------------======//
 
-use log::*;
 use serenity::async_trait;
+use serenity::framework::standard::macros::hook;
 use serenity::model::channel::Message;
 use serenity::model::gateway::Ready;
 use serenity::prelude::*;
+use tracing::instrument;
+use tracing::log::*;
 
+#[derive(Debug)]
 pub struct Handler;
+
+#[hook]
+#[instrument]
+async fn before(_: &Context, msg: &Message, command_name: &str) -> bool {
+    info!("Got command '{command_name}' by user '{}'", msg.author.name);
+
+    true
+}
 
 #[async_trait]
 impl EventHandler for Handler {
-    async fn ready(&self, _: Context, ready: Ready) {
-        warn!("{} is connected!", ready.user.name);
+    #[instrument(skip(self, _ctx, ready))]
+    async fn ready(&self, _ctx: Context, ready: Ready) {
+        info!("{} is connected!", ready.user.name);
     }
 }
