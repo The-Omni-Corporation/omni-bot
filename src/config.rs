@@ -12,7 +12,6 @@ use serde::Deserialize;
 use serenity::prelude::TypeMapKey;
 use std::env;
 use std::fs;
-use toml;
 use tracing::metadata::Level;
 
 #[derive(Copy, Clone, Eq, PartialEq, Deserialize)]
@@ -29,14 +28,14 @@ pub enum LogLevel {
     Error,
 }
 
-impl Into<Level> for LogLevel {
-    fn into(self) -> Level {
-        match self {
-            Self::Trace => Level::TRACE,
-            Self::Debug => Level::DEBUG,
-            Self::Info => Level::INFO,
-            Self::Warn => Level::WARN,
-            Self::Error => Level::ERROR,
+impl From<LogLevel> for Level {
+    fn from(val: LogLevel) -> Level {
+        match val {
+            LogLevel::Trace => Level::TRACE,
+            LogLevel::Debug => Level::DEBUG,
+            LogLevel::Info => Level::INFO,
+            LogLevel::Warn => Level::WARN,
+            LogLevel::Error => Level::ERROR,
         }
     }
 }
